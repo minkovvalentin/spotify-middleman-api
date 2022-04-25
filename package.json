@@ -1,0 +1,22 @@
+{
+  "name": "spotify-middleman-api",
+  "version": "1.0.0",
+  "description": "Exposes endpoints for manipulating data fetched from the spotify api.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/minkovvalentin/spotify-middleman-api.git"
+  },
+  "author": "valentin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/minkovvalentin/spotify-middleman-api/issues"
+  },
+  "homepage": "https://github.com/minkovvalentin/spotify-middleman-api#readme",
+  "devDependencies": {
+    "@vercel/node": "^1.14.1"
+  }
+}
