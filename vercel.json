@@ -1,0 +1,9 @@
+{
+  "routes": [
+    {
+      "src": "/playlist",
+      "methods": ["GET"],
+      "dest": "/api/playlist.js"
+    }
+  ]
+}
