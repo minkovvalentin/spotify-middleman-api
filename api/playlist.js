@@ -1,38 +1,16 @@
-const fetch = require('node-fetch');
+const { getFullPlaylistData } = require('../utils/playlist');
 
 module.exports = async (req, res) => {
     if (req.method === 'GET') {
         const id = req.headers.id;
         const auth = req.headers.authorization;
 
-
-
         // to do : export url in some config file
         const url = `https://api.spotify.com/v1/playlists/${id}`;
 
-        try {
-            const playlists = await fetch(url, {
-                method: "GET",
-                headers: {
-                    Authorization: auth,
-                    "Content-Type": "application/json",
-                },
-            });
+        const playlistData = await getFullPlaylistData(url, auth);
 
-            const result = await playlists.json();
-
-            console.log('the result here', result);
-
-            if (result.error) {
-                // to do see how to best handle errors in api 
-                console.error("Error fetching playlists", result);
-            }
-
-
-        } catch (error) {
-            console.error("Error fetching playlists", error);
-        }
-
+        console.log('the playlist data', playlistData.tracks.length);
 
         // TODO: Return something like
         //  an array of artists in the playlist, 
