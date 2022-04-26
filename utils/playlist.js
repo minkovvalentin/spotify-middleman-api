@@ -1,9 +1,14 @@
 const fetch = require('node-fetch');
 
 const getFullPlaylistData = async (
-    url,
-    auth
+    id,
+    auth,
+    limit
 ) => {
+    // TODO add offset option in the url in this function
+    // to do : export url in some config file
+    const url = `https://api.spotify.com/v1/playlists/${id}`;
+
     try {
         // Get the playlist data
         const playlist = await fetch(url, {
@@ -26,9 +31,9 @@ const getFullPlaylistData = async (
         const newUrl = result.tracks.next;
         // fetch all the tracks in the playlist
         // as spotify returns only 100 at a time.
-        // TODO do this step only if tracks > 100 
+        // TODO do this step only if total tracks > 100 
 
-        const allTracks = await getAllTracksInPlaylist(newUrl, auth, tracks);
+        const allTracks = await getTracksInPlaylist(newUrl, auth, tracks, limit);
 
         return { ...result, tracks: allTracks };
 
@@ -37,16 +42,18 @@ const getFullPlaylistData = async (
     }
 }
 
-const getAllTracksInPlaylist = async (
+const getTracksInPlaylist = async (
     url,
     auth,
     tracks = [],
+    max = 0
 ) => {
     // TO DO maybe there is a better way to log this
     console.log('Fetching tracks. Currently fetched: ', tracks.length);
+    // If max is specified do not attempt to fetch more playlists
+    if (!url || (max > 0 && tracks.length >= max)) return tracks;
 
     try {
-
         const nextTracksInPlaylist = await fetch(url, {
             method: "GET",
             headers: {
@@ -56,10 +63,10 @@ const getAllTracksInPlaylist = async (
         })
 
         const result = await nextTracksInPlaylist.json();
-        // console.log('the result here', result);
+
         if (result.error) {
             // to do see how to best handle errors in api 
-            console.error("Error in result in getAllTracksInPlaylist function", result);
+            console.error("Error in result in getTracksInPlaylist function", result);
             return tracks;
         }
 
@@ -70,15 +77,15 @@ const getAllTracksInPlaylist = async (
             return tracks;
         }
 
-       return await getAllTracksInPlaylist(result.next, auth, tracks)
+        return await getTracksInPlaylist(result.next, auth, tracks, max)
 
     } catch (error) {
-        console.error("Error in getAllTracksInPlaylist function :", error)
+        console.error("Error in getTracksInPlaylist function :", error)
         return tracks;
     }
 };
 
 module.exports = {
     getFullPlaylistData,
-    getAllTracksInPlaylist
+    getTracksInPlaylist
 }

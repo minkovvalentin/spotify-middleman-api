@@ -4,11 +4,9 @@ module.exports = async (req, res) => {
     if (req.method === 'GET') {
         const id = req.headers.id;
         const auth = req.headers.authorization;
+        const limit = req.headers.limit ?? 0;
 
-        // to do : export url in some config file
-        const url = `https://api.spotify.com/v1/playlists/${id}`;
-
-        const playlistData = await getFullPlaylistData(url, auth);
+        const playlistData = await getFullPlaylistData(id, auth, limit);
 
         console.log('the playlist data', playlistData.tracks.length);
 
