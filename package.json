@@ -4,6 +4,7 @@
   "description": "Exposes endpoints for manipulating data fetched from the spotify api.",
   "main": "index.js",
   "scripts": {
+    "start": "vercel dev --listen 5005",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,5 +19,8 @@
   "homepage": "https://github.com/minkovvalentin/spotify-middleman-api#readme",
   "devDependencies": {
     "@vercel/node": "^1.14.1"
+  },
+  "dependencies": {
+    "node-fetch": "2"
   }
 }
